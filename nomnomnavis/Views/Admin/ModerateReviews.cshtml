@@ -1,0 +1,22 @@
+﻿@model List<nomnomnavis.Models.Review>
+<h2>Moderate Reviews</h2>
+
+<table class="table">
+    <tr>
+        <th>Username</th>
+        <th>Rating</th>
+        <th>Content</th>
+        <th>Actions</th>
+    </tr>
+    @foreach (var review in Model)
+    {
+        <tr>
+            <td>@review.Username</td>
+            <td>@review.Rating</td>
+            <td>@review.Content</td>
+            <td>
+                <a asp-action="DeleteReview" asp-route-id="@review.Id" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

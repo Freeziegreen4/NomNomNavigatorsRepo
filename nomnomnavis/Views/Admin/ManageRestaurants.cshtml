@@ -1,0 +1,27 @@
+﻿@model List<nomnomnavis.Models.Restaurant>
+
+<h2>Manage Restaurants</h2>
+<a asp-action="AddRestaurant" class="btn btn-success mb-3">Add New Restaurant</a>
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Cuisine</th>
+        <th>Hours</th>
+        <th>Actions</th>
+    </tr>
+    @foreach (var r in Model)
+    {
+        <tr>
+            <td>@r.Name</td>
+            <td>@r.Address</td>
+            <td>@r.Cuisine</td>
+            <td>@r.Hours</td>
+            <td>
+                <a asp-action="EditRestaurant" asp-route-id="@r.Id" class="btn btn-primary btn-sm">Edit</a>
+                <a asp-action="DeleteRestaurant" asp-route-id="@r.Id" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+    }
+</table>
