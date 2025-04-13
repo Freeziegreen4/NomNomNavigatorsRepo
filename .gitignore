@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Database connection, make sure you change
+#	it to whatever the database is called on yours
+/NomNomsAPI/appsettings.json
+
 # User-specific files
 *.rsuser
 *.suo

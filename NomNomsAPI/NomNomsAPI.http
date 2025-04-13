@@ -1,0 +1,6 @@
+@NomNomsAPI_HostAddress = http://localhost:5018
+
+GET {{NomNomsAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

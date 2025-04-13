@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nomnomnavis", "nomnomnavis\nomnomnavis.csproj", "{4A7AB18B-A118-463F-A803-D6F233EBB59F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NomNomsAPI", "NomNomsAPI\NomNomsAPI.csproj", "{00401BF9-C172-405E-98A8-56609517439B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{4A7AB18B-A118-463F-A803-D6F233EBB59F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A7AB18B-A118-463F-A803-D6F233EBB59F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A7AB18B-A118-463F-A803-D6F233EBB59F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00401BF9-C172-405E-98A8-56609517439B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00401BF9-C172-405E-98A8-56609517439B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00401BF9-C172-405E-98A8-56609517439B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00401BF9-C172-405E-98A8-56609517439B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {07F1D178-E3B0-491C-A837-D79AB554920F}
 	EndGlobalSection
 EndGlobal
