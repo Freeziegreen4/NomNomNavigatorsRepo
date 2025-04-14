@@ -1,0 +1,22 @@
+﻿@model List<nomnomnavis.Models.Restaurant>
+@{
+    ViewData["Title"] = "My Favorites";
+}
+
+<h2>Favorite Restaurants</h2>
+
+@if (Model.Any())
+{
+    <ul>
+        @foreach (var r in Model)
+        {
+            <li>
+                <a href="/Restaurant/Details/@r.Id">@r.Name</a> - @r.Cuisine
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>You have not saved any favorites yet.</p>
+}
