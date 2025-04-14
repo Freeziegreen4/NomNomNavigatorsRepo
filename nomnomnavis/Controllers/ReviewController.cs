@@ -15,7 +15,7 @@ namespace nomnomnavis.Controllers
         public ReviewController(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient();
-            _httpClient.BaseAddress = new Uri("http://localhost:5245/api/ReviewAPI/");
+            _httpClient.BaseAddress = new Uri("http://localhost:5018/api/ReviewAPI/");
         }
 
         // View all reviews for a restaurant

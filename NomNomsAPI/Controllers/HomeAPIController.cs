@@ -4,7 +4,7 @@ using NomNomsAPI.Models;
 
 namespace NomNomsAPI.Controllers
 {
-    // Base URL -> http://localhost:5245/api/HomeAPI
+    // Base URL -> http://localhost:5018/api/HomeAPI
     [Route("api/[controller]")]
     [ApiController]
     public class HomeAPIController : ControllerBase

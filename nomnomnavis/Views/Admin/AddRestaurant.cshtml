@@ -1,7 +1,6 @@
 ﻿@model nomnomnavis.Models.Restaurant
-<h2>@(Model.Id == 0 ? "Add" : "Edit") Restaurant</h2>
-
-<form asp-action="@(Model.Id == 0 ? "AddRestaurant" : "EditRestaurant")" method="post">
+<h2>Add Restaurant</h2>
+<form asp-action="AddRestaurant" method="post">
     <input type="hidden" asp-for="Id" />
     <div class="form-group">
         <label>Name</label>
@@ -21,3 +20,15 @@
     </div>
     <button type="submit" class="btn btn-primary mt-3">Save</button>
 </form>
+
+@* @{ *@
+@*     Console.WriteLine("Test"); *@
+@* } *@
+@* @if (ViewBag.Conflict != null) *@
+@* { *@
+@*     <div class="text-danger">@ViewBag.Conflict</div> *@
+@* } *@
+@* @if(ViewBag.BadRequest != null) *@
+@* { *@
+@*     <div class="text-danger">@ViewBag.BadRequest</div> *@
+@* } *@

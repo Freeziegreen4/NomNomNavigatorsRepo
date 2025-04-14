@@ -4,7 +4,7 @@ using NomNomsAPI.Models;
 
 namespace NomNomsAPI.Controllers
 {
-    // Base URL -> http://localhost:5245/api/ReviewAPI/
+    // Base URL -> http://localhost:5018/api/ReviewAPI/
     [Route("api/[controller]")]
     [ApiController]
     public class ReviewAPIController : ControllerBase
@@ -15,22 +15,22 @@ namespace NomNomsAPI.Controllers
 
         // Review API Hooks
         /*  GET -> Single review (
-         *      url extension -> http://localhost:5245/api/ReviewAPI/ [reviewID]
+         *      url extension -> http://localhost:5018/api/ReviewAPI/ [reviewID]
          *  GET -> All reviews
-         *      url extension -> http://localhost:5245/api/ReviewAPI/
+         *      url extension -> http://localhost:5018/api/ReviewAPI/
          *  GET -> All reviews for a specific restaurant
-         *      url extension -> http://localhost:5245/api/ReviewAPI/ [restID] /reviews/
+         *      url extension -> http://localhost:5018/api/ReviewAPI/ [restID] /reviews/
          *      
          *      ***************************************************************************
          *      
          *  POST -> Create a review
-         *      url extension -> http://localhost:5245/api/ReviewAPI/
+         *      url extension -> http://localhost:5018/api/ReviewAPI/
          *      
          *  PUT -> Update review
-         *      url extension -> http://localhost:5245/api/ReviewAPI/ [reviewID] /update
+         *      url extension -> http://localhost:5018/api/ReviewAPI/ [reviewID] /update
          *      
          *  DELETE -> Delete a review
-         *      url extension -> http://localhost:5245/api/ReviewAPI/ [reviewID]
+         *      url extension -> http://localhost:5018/api/ReviewAPI/ [reviewID]
          *      
          *      ***************************************************************************
          */

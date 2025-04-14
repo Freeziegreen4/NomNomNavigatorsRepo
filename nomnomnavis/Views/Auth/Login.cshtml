@@ -10,6 +10,10 @@
     <input asp-for="Password" type="password" class="form-control" />
     <button class="btn btn-primary mt-2">Login</button>
 </form>
+@if(ViewBag.NotFound != null)
+{
+    <div class="text-danger">@ViewBag.NotFound</div>
+}
 @if (ViewBag.Error != null)
 {
     <div class="text-danger">@ViewBag.Error</div>

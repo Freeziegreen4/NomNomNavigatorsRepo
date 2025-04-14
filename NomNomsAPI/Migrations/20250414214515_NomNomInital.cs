@@ -5,7 +5,7 @@
 namespace NomNomsAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class NomNomInitial : Migration
+    public partial class NomNomInital : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

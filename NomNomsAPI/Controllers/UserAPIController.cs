@@ -4,7 +4,7 @@ using NomNomsAPI.Models;
 
 namespace NomNomsAPI.Controllers
 {
-    // Base URL -> http://localhost:5245/api/UserAPI/
+    // Base URL -> http://localhost:5018/api/UserAPI/
     [Route("api/[controller]")]
     [ApiController]
     public class UserAPIController : ControllerBase
@@ -15,15 +15,15 @@ namespace NomNomsAPI.Controllers
 
         // Users API Hooks:
         /*  ✔️ GET -> Single user (
-         *      url extension -> http://localhost:5245/api/UserApi/ [userID]
+         *      url extension -> http://localhost:5018/api/api/UserAPI/ [userID]
          *  ✔️ GET -> All Users
-         *      url extension -> http://localhost:5245/api/UserApi
+         *      url extension -> http://localhost:5018/api/api/UserAPI
          *  ✔️ POST -> Create a user
-         *      url extension -> http://localhost:5245/api/UserApi
+         *      url extension -> http://localhost:5018/api/api/UserAPI
          *  ✔️ PUT -> Update user details
-         *      url extension -> http://localhost:5245/api/UserApi/ [userID] /update
+         *      url extension -> http://localhost:5018/api/api/UserAPI/ [userID] /update
          *  ✔️ DELETE -> Delete a user
-         *      url extension -> http://localhost:5245/api/UserApi/ [userID]
+         *      url extension -> http://localhost:5018/api/api/UserAPI/ [userID]
          */
 
         /*
@@ -59,8 +59,20 @@ namespace NomNomsAPI.Controllers
             return Ok(currentUser);
         }
 
+        //[HttpGet("{username}/{password}")]
+        //public ActionResult<User> GetAUser()//[FromForm] string uName, [FromForm] string passwd)
+        //{
+        //    User currentUser = nomNomDBAccessor.users.FirstOrDefault(
+        //        u => u.Username.Equals(user.Username) && u.Password.Equals(user.Password));
+        //    //(u => u.Username.Equals(uName) && u.Password.Equals(passwd));
+        //    if (currentUser == null)
+        //        return NotFound("User could not be found. Ensure you have the correct ID");
+
+        //    return Ok(currentUser);
+        //}
+
         [HttpPost]
-        public ActionResult<User> AddUser(User user)
+        public ActionResult<User> AddUser([FromBody]User user)
         {
             // Validation
             if(!CheckUserValues(user))

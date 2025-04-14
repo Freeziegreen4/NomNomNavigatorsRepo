@@ -3,6 +3,11 @@
 <h2>Manage Restaurants</h2>
 <a asp-action="AddRestaurant" class="btn btn-success mb-3">Add New Restaurant</a>
 
+@if(ViewBag.Error != null)
+{
+    <div class="text-danger">@ViewBag.Error</div>
+}
+
 <table class="table">
     <tr>
         <th>Name</th>

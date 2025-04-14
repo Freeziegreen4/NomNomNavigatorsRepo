@@ -4,7 +4,7 @@ using NomNomsAPI.Models;
 
 namespace NomNomsAPI.Controllers
 {
-    // Base URL -> http://localhost:5245/api/RestaurantAPI/
+    // Base URL -> http://localhost:5018/api/RestaurantAPI/
     [Route("api/[controller]")]
     [ApiController]
     public class RestaurantAPIController : ControllerBase
@@ -14,15 +14,15 @@ namespace NomNomsAPI.Controllers
 
         // Restaurant API Hooks
         /*  ✔️ GET -> Single restaurant (
-         *      url extension -> http://localhost:5245/api/RestaurantAPI/ [restID]
+         *      url extension -> http://localhost:5018/api/RestaurantAPI/ [restID]
          *  ✔️ GET -> All restaurants
-         *      url extension -> http://localhost:5245/api/RestaurantAPI/
+         *      url extension -> http://localhost:5018/api/RestaurantAPI/
          *  ✔️ POST -> Create a restaurant
-         *      url extension -> http://localhost:5245/api/RestaurantAPI/
+         *      url extension -> http://localhost:5018/api/RestaurantAPI/
          *  ✔️ PUT -> Update restaurant details
-         *      url extension -> http://localhost:5245/api/RestaurantAPI/ [restID] /update
+         *      url extension -> http://localhost:5018/api/RestaurantAPI/ [restID] /update
          *  ✔️ DELETE -> Delete a restaurant
-         *      url extension -> http://localhost:5245/api/RestaurantAPI/ [restID]
+         *      url extension -> http://localhost:5018/api/RestaurantAPI/ [restID]
          */
 
         /*
@@ -49,11 +49,11 @@ namespace NomNomsAPI.Controllers
         {
             if (!CheckRestaurantValues(restaurant))
                 return BadRequest("Ensure that all fields are not blank");
-            else if (nomNomDBAccessor.restaurants.FirstOrDefault(
-                r => r.Id == restaurant.Id) != null)
-                return Conflict("An error occurred when adding the restaurant. " +
-                    "Please try again!");
-            else if (nomNomDBAccessor.restaurants.First(r => r.Address == restaurant.Address) != null)
+            //else if (nomNomDBAccessor.restaurants.FirstOrDefault(
+            //    r => r.Id == restaurant.Id) != null)
+            //    return Conflict("An error occurred when adding the restaurant. " +
+            //        "Please try again!");
+            else if (nomNomDBAccessor.restaurants.FirstOrDefault(r => r.Address.Equals(restaurant.Address)) != null)
                 return Conflict($"There is already a restaurant at that address ({restaurant.Address}). " +
                     $"Please enter an address that has not already been taken.");
             Restaurant newRestaurant = new Restaurant()
