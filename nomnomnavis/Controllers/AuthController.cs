@@ -44,7 +44,11 @@ namespace nomnomnavis.Controllers
                     JsonConvert.SerializeObject(user),
                     Encoding.UTF8, "application/json")))
             {
-                if(response.StatusCode == System.Net.HttpStatusCode.Conflict) {
+                if (!response.IsSuccessStatusCode)
+                {
+                    
+                    return View();
+                }
             }
             return RedirectToAction("Login");
         }
