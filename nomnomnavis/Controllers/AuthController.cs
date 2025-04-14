@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using nomnomnavis.Models;
 using nomnomnavis.Services;
 
@@ -7,7 +9,12 @@ namespace nomnomnavis.Controllers
     public class AuthController : Controller
     {
         private readonly IUserService _userService;
-        public AuthController(IUserService userService) => _userService = userService;
+        private readonly HttpClient _httpClient;
+        public AuthController(IUserService userService, HttpClient httpClient)
+        {
+            _userService = userService;
+            _httpClient = httpClient;
+        }
 
         public IActionResult Login() => View();
 
@@ -29,9 +36,16 @@ namespace nomnomnavis.Controllers
         public IActionResult Register() => View();
 
         [HttpPost]
-        public IActionResult Register(User user)
+        public async Task<IActionResult> Register(User user)
         {
-            _userService.Register(user);
+            //_userService.Register(user);
+            using (var response = await _httpClient.PostAsync("http://localhost:5245/api/UserApi",
+                new StringContent(
+                    JsonConvert.SerializeObject(user),
+                    Encoding.UTF8, "application/json")))
+            {
+                if(response.StatusCode == System.Net.HttpStatusCode.Conflict) {
+            }
             return RedirectToAction("Login");
         }
 
