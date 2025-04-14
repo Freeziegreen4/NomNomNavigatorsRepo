@@ -1,0 +1,17 @@
+﻿@model nomnomnavis.Models.Review
+
+<h2>Edit Review</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label>Content</label>
+        <textarea asp-for="Content"></textarea>
+    </div>
+    <div>
+        <label>Rating</label>
+        <input asp-for="Rating" type="number" min="0" max="5" />
+    </div>
+    <button type="submit">Update</button>
+</form>

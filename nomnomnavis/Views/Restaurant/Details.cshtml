@@ -1,0 +1,25 @@
+﻿@model nomnomnavis.Models.Restaurant
+@{
+    ViewData["Title"] = "Restaurant Details";
+}
+
+<h2>@Model.Name</h2>
+<p><strong>Address:</strong> @Model.Address</p>
+<p><strong>Hours:</strong> @Model.Hours</p>
+<p><strong>Cuisine:</strong> @Model.Cuisine</p>
+
+<h3>Reviews</h3>
+@if (Model.Reviews.Any())
+{
+    <ul>
+        @foreach (var review in Model.Reviews)
+        {
+            @* <li>@review.Comment - ⭐ @review.Rating</li> *@
+        }
+    </ul>
+}
+else
+{
+    <p>No reviews yet.</p>
+}
+<a href="/Restaurant/Favorite/@Model.Id" class="btn btn-primary">❤️ Save as Favorite</a>

@@ -1,0 +1,43 @@
+﻿@model List<nomnomnavis.Models.Restaurant>
+@{
+    ViewData["Title"] = "Search Restaurants";
+}
+
+<h2>Search Restaurants</h2>
+
+<form method="get">
+    <input type="text" name="searchTerm" placeholder="Search..." />
+    <select name="cuisine">
+        <option value="">All Cuisines</option>
+        <option value="Italian">Italian</option>
+        <option value="Mexican">Mexican</option>
+        <option value="Japanese">Japanese</option>
+    </select>
+    <select name="sort">
+        <option value="">Sort By</option>
+        <option value="highest-rated">Highest Rated</option>
+        <option value="most-reviewed">Most Reviewed</option>
+    </select>
+    <button type="submit">Search</button>
+</form>
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Cuisine</th>
+        <th></th>
+    </tr>
+    @foreach (var r in Model)
+    {
+        <tr>
+            <td>@r.Name</td>
+            <td>@r.Address</td>
+            <td>@r.Cuisine</td>
+            <td>
+                <a href="/Restaurant/Details/@r.Id">Details</a> |
+                <a href="/Restaurant/Favorite/@r.Id">❤️ Save</a>
+            </td>
+        </tr>
+    }
+</table>

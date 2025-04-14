@@ -1,0 +1,17 @@
+﻿@model nomnomnavis.Models.Review
+
+<h2>Add Review</h2>
+
+<form asp-action="Add" method="post">
+    <input type="hidden" name="restID" value="@ViewBag.RestaurantId" />
+
+    <div>
+        <label>Content</label>
+        <textarea asp-for="Content"></textarea>
+    </div>
+    <div>
+        <label>Rating (0–5)</label>
+        <input asp-for="Rating" type="number" min="0" max="5" />
+    </div>
+    <button type="submit">Submit</button>
+</form>

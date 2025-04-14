@@ -1,0 +1,17 @@
+﻿@model List<nomnomnavis.Models.Review>
+
+<h2>Reviews</h2>
+
+<a asp-action="Add" asp-route-restID="@ViewBag.RestaurantId">Add Review</a>
+
+@foreach (var review in Model)
+{
+    <div>
+        <p><strong>User:</strong> @review.User?.Id</p>
+        <p><strong>Rating:</strong> @review.Rating</p>
+        <p><strong>Review:</strong> @review.Content</p>
+        <a asp-action="Edit" asp-route-id="@review.Id">Edit</a> |
+        <a asp-action="Delete" asp-route-id="@review.Id" asp-route-restID="@ViewBag.RestaurantId">Delete</a>
+    </div>
+    <hr />
+}
