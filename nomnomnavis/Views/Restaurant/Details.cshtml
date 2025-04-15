@@ -19,10 +19,10 @@
     </button>
 </form>
 
-@if (Model.Reviews.Any())
+@if (ViewBag.Reviews.Count > 0)
 {
     <ul>
-        @foreach (var review in Model.Reviews)
+        @foreach (var review in ViewBag.Reviews)
         {
             <li>@review.Content - ⭐ @review.Rating</li>
         }

@@ -7,7 +7,7 @@
 @foreach (var review in Model)
 {
     <div>
-        <p><strong>User:</strong> @review.User?.Id</p>
+        <p><strong>User:</strong> @review.Username</p>
         <p><strong>Rating:</strong> @review.Rating</p>
         <p><strong>Review:</strong> @review.Content</p>
         <a asp-action="Edit" asp-route-id="@review.Id">Edit</a> |

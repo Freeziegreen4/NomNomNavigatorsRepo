@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NomNomsAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace NomNomsAPI.Controllers
 {
@@ -40,7 +41,7 @@ namespace NomNomsAPI.Controllers
         {
             if (reviewID <= 0)
                 return BadRequest("ID must be greater than zero!");
-            Review currentReview = nomNomDBAccessor.reviews.FirstOrDefault
+            Review? currentReview = nomNomDBAccessor.reviews.FirstOrDefault
                 (r => r.Id == reviewID);
             if (currentReview == null)
                 return NotFound("Review could not be found. Ensure you have the correct ID");
@@ -61,10 +62,11 @@ namespace NomNomsAPI.Controllers
                 .restaurants.FirstOrDefault(r => r.Id == restID);
             if (restaurant == null)
                 return BadRequest("There is no restaurant for the given ID");
-            else if (restaurant.Reviews.Count() == 0)
-                return BadRequest($"There are no reviews for {restaurant.Name} at {restaurant.Address}");
+            IEnumerable<Review> reviews = nomNomDBAccessor.reviews.Where(r => r.RestaurantID == restID);
+            if (reviews.Count() == 0)
+                return Ok(reviews);//$"There are no reviews for {restaurant.Name} at {restaurant.Address}");
 
-            return Ok(restaurant.Reviews);
+            return Ok(reviews);
         }
 
         [HttpPost("{restID}")]
@@ -82,19 +84,23 @@ namespace NomNomsAPI.Controllers
             Review newReview = new Review()
             {
                 Content = review.Content,
-                User = review.User,
-                Rating = review.Rating
+                Username = review.Username,
+                Rating = review.Rating,
+                RestaurantID = restID
             };
 
-            Restaurant restaurantToReview = nomNomDBAccessor.restaurants.FirstOrDefault(r => r.Id == restID);
-            if(restaurantToReview != null)
-            {
-                restaurantToReview.Reviews.Add(newReview);
-                nomNomDBAccessor.restaurants.Update(restaurantToReview);
-            }
-
+            //nomNomDBAccessor.Entry(newReview.User).State = EntityState.Detached;
             nomNomDBAccessor.reviews.Add(newReview);
             nomNomDBAccessor.SaveChanges();
+
+            //Restaurant restaurantToReview = nomNomDBAccessor.restaurants.FirstOrDefault(r => r.Id == restID);
+            //if (restaurantToReview != null)
+            //{
+            //    restaurantToReview.Reviews.Add(newReview);
+            //    nomNomDBAccessor.restaurants.Update(restaurantToReview);
+            //    nomNomDBAccessor.SaveChanges();
+            //}
+
             if (nomNomDBAccessor.reviews.FirstOrDefault(r => r.Id == review.Id) == null)
                 return BadRequest("An error occurred when adding the review. " +
                     "Please try again!");
@@ -146,8 +152,8 @@ namespace NomNomsAPI.Controllers
 
         private bool CheckReviewValues(Review review) => 
             review.Content != null && !review.Content.Equals("")
-            && review.User != null 
-            && nomNomDBAccessor.users.FirstOrDefault(u => u.Id == review.User.Id) != null
+            && review.Username != null 
+            && nomNomDBAccessor.users.FirstOrDefault(u => u.Username == review.Username) != null
             && review.Rating >= 0;
     }
 }

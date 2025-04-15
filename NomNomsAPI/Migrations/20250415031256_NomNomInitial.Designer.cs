@@ -12,8 +12,8 @@ using NomNomsAPI.Models;
 namespace NomNomsAPI.Migrations
 {
     [DbContext(typeof(NomNomDBContext))]
-    [Migration("20250414214515_NomNomInital")]
-    partial class NomNomInital
+    [Migration("20250415031256_NomNomInitial")]
+    partial class NomNomInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,14 +72,13 @@ namespace NomNomsAPI.Migrations
                     b.Property<int?>("RestaurantId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RestaurantId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("reviews");
                 });
@@ -114,14 +113,6 @@ namespace NomNomsAPI.Migrations
                     b.HasOne("NomNomsAPI.Models.Restaurant", null)
                         .WithMany("Reviews")
                         .HasForeignKey("RestaurantId");
-
-                    b.HasOne("NomNomsAPI.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NomNomsAPI.Models.Restaurant", b =>

@@ -6,11 +6,11 @@
         //public string Username { get; set; }
         // Changing the username property to a user object
         // for a similar reason to the removal of restaurantID
-        public User User { get; set; }
+        public string Username { get; set; }
         public string Content { get; set; }
         public int Rating { get; set; }
         
-        //public int RestaurantId { get; set; }
+        public int RestaurantId { get; set; }
 
         /* Removed the restaurantID property,
          *  shifted it over as an object in the restaurant model.

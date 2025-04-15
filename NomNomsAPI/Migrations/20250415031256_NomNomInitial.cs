@@ -5,7 +5,7 @@
 namespace NomNomsAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class NomNomInital : Migration
+    public partial class NomNomInitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,7 +47,7 @@ namespace NomNomsAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     RestaurantId = table.Column<int>(type: "int", nullable: true)
@@ -60,23 +60,12 @@ namespace NomNomsAPI.Migrations
                         column: x => x.RestaurantId,
                         principalTable: "restaurants",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_reviews_users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_reviews_RestaurantId",
                 table: "reviews",
                 column: "RestaurantId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_reviews_UserId",
-                table: "reviews",
-                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -86,10 +75,10 @@ namespace NomNomsAPI.Migrations
                 name: "reviews");
 
             migrationBuilder.DropTable(
-                name: "restaurants");
+                name: "users");
 
             migrationBuilder.DropTable(
-                name: "users");
+                name: "restaurants");
         }
     }
 }

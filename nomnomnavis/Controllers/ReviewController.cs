@@ -21,14 +21,18 @@ namespace nomnomnavis.Controllers
         // View all reviews for a restaurant
         public async Task<IActionResult> RestaurantReviews(int restID)
         {
-            var response = await _httpClient.GetFromJsonAsync<List<Review>>($"{restID}/reviews");
+            List<Review> response = await _httpClient.GetFromJsonAsync<List<Review>>($"{restID}/reviews");
             return View(response);
         }
 
         // GET: Add Review form
+        //[HttpGet("{restID}")]
         public IActionResult Add(int restID)
         {
-            ViewBag.RestaurantId = restID;
+            if (TempData["RestID"] != null)
+                ViewBag.RestaurantId = TempData["RestID"];
+            else
+                ViewBag.RestaurantId = restID;
             return View(new Review());
         }
 
@@ -39,15 +43,16 @@ namespace nomnomnavis.Controllers
             // Assign a dummy user or handle logged-in user logic
             User currentUser = (await _httpClient.GetFromJsonAsync<List<User>>("http://localhost:5018/api/userAPI"))
                 .FirstOrDefault(u => u.Username.Equals(HttpContext.Session.GetString("username")));
-            review.User = currentUser; // Dummy user // NOTE (CAM): gonna make this
+            review.Username = currentUser.Username; // Dummy user // NOTE (CAM): gonna make this
                                        // dummy user contain the id of the active user
             var response = await _httpClient.PostAsJsonAsync($"http://localhost:5018/api/reviewAPI/{restID}", review);
 
             if (response.IsSuccessStatusCode)
-                return RedirectToAction("RestaurantReviews", new { restID });
+                return RedirectToAction("RestaurantReviews", restID);
 
             ModelState.AddModelError(string.Empty, "Error submitting review.");
-            return RedirectToAction("Restaurant", "Details");
+            TempData["RestID"] = restID;
+            return Redirect($"http://localhost:5245/restaurant/details/{restID}");
         }
 
         // GET: Edit review
@@ -59,12 +64,12 @@ namespace nomnomnavis.Controllers
 
         // POST: Edit review
         [HttpPost]
-        public async Task<IActionResult> Edit(Review review)
+        public async Task<IActionResult> Edit(int restID, Review review)
         {
             var response = await _httpClient.PutAsJsonAsync($"{review.Id}/update", review);
 
             if (response.IsSuccessStatusCode)
-                return RedirectToAction("RestaurantReviews", new { restID = review.User.Id }); // Adjust as needed
+                return RedirectToAction("RestaurantReviews", restID); // Adjust as needed
 
             ModelState.AddModelError(string.Empty, "Failed to update.");
             return View(review);

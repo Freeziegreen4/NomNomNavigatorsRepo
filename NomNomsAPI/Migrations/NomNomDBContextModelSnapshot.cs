@@ -69,14 +69,13 @@ namespace NomNomsAPI.Migrations
                     b.Property<int?>("RestaurantId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RestaurantId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("reviews");
                 });
@@ -111,14 +110,6 @@ namespace NomNomsAPI.Migrations
                     b.HasOne("NomNomsAPI.Models.Restaurant", null)
                         .WithMany("Reviews")
                         .HasForeignKey("RestaurantId");
-
-                    b.HasOne("NomNomsAPI.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NomNomsAPI.Models.Restaurant", b =>

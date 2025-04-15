@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using nomnomnavis.Models;
+using System.Numerics;
 using System.Text.Json;
 
 namespace nomnomnavis.Controllers
@@ -14,9 +16,17 @@ namespace nomnomnavis.Controllers
             _httpClient = new HttpClient();
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var allRestaurants = await _httpClient.GetFromJsonAsync<List<Restaurant>>(_apiBaseUrl);
+            return View(allRestaurants);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Index(string searchTerm, string cuisine, string sort)
         {
             var allRestaurants = await _httpClient.GetFromJsonAsync<List<Restaurant>>(_apiBaseUrl);
+            var allReviews = await _httpClient.GetFromJsonAsync<List<Review>>("http://localhost:5018/api/reviewAPI");
 
             if (!string.IsNullOrEmpty(searchTerm))
                 allRestaurants = allRestaurants
@@ -30,23 +40,59 @@ namespace nomnomnavis.Controllers
             if (!string.IsNullOrEmpty(sort))
             {
                 if (sort == "highest-rated")
-                    allRestaurants = allRestaurants.OrderByDescending(r => r.Reviews.Average(rv => rv.Rating)).ToList();
+                {
+                    List<Vector2> highestRatedRestaurants = new List<Vector2>();
+                    foreach (Restaurant restaurant in allRestaurants)
+                    {
+                        highestRatedRestaurants.Add(new Vector2(restaurant.Id, (float)(allReviews.Where(r => r.Id == restaurant.Id).Average(rv => rv.Rating))));
+                    }
+                    highestRatedRestaurants.OrderByDescending(hrr => hrr.Y);
+                    List<Restaurant> restaurants = new List<Restaurant>();
+                    foreach (Vector2 rank in highestRatedRestaurants)
+                    {
+                        restaurants.Add(allRestaurants.First(r => r.Id == rank.X));
+                    }
+                    allRestaurants = restaurants;
+                    //allRestaurants = allRestaurants.OrderByDescending(r => r.Reviews.Average(rv => rv.Rating)).ToList();
+                }
                 else if (sort == "most-reviewed")
-                    allRestaurants = allRestaurants.OrderByDescending(r => r.Reviews.Count).ToList();
+                {
+                    List<Vector2> mostReviewed = new List<Vector2>();
+                    foreach (Restaurant restaurant in allRestaurants)
+                        mostReviewed.Add(new Vector2(restaurant.Id, (float)allReviews.Where(r => r.Id == restaurant.Id).Count()));
+                    mostReviewed.OrderByDescending(mr => mr.Y);
+                    List<Restaurant> restaurants = new List<Restaurant>();
+                    foreach(Vector2 rank in mostReviewed)
+                        restaurants.Add(allRestaurants.First(r => r.Id == rank.X));
+                    allRestaurants = restaurants;
+                    //allRestaurants = allRestaurants.OrderByDescending(r => r.Reviews.Count).ToList();
+                }
             }
 
             return View(allRestaurants);
         }
 
+        
         public async Task<IActionResult> Details(int id)
         {
-            var restaurant = await _httpClient.GetFromJsonAsync<Restaurant>($"{_apiBaseUrl}/{id}");
+            if (id > 0)
+                TempData["RestID"] = id;
+            if (TempData["RestID"] != null)
+                id = (int)TempData["RestID"];
+            Restaurant restaurant = await _httpClient.GetFromJsonAsync<Restaurant>($"{_apiBaseUrl}/{id}");
+            //using(var response = await _httpClient.GetAsync($"http://localhost:5018/api/reviewAPI/{id}/reviews"))
+            //{
+            //    string apiRes = await response.Content.ReadAsStringAsync();
+            //    ViewBag.Reviews = JsonConvert.DeserializeObject<List<Review>>(apiRes);
+            //}
+            ViewBag.Reviews = await _httpClient.GetFromJsonAsync<List<Review>>($"http://localhost:5018/api/reviewAPI/{id}/reviews");
             return View(restaurant);
         }
 
         public IActionResult AddReview(int restID)
         {
-            return RedirectToAction("Add", "Reviews", restID);
+            TempData["RestID"] = restID;
+            return RedirectToAction("Add", "Review");
         }
 
         public IActionResult Favorite(int id)
@@ -74,12 +120,12 @@ namespace nomnomnavis.Controllers
 public static class SessionExtensions
 {
     public static void SetObjectAsJson(this ISession session, string key, object value) =>
-        session.SetString(key, JsonSerializer.Serialize(value));
+        session.SetString(key, JsonConvert.SerializeObject(value));
 
     public static T GetObjectFromJson<T>(this ISession session, string key)
     {
         var value = session.GetString(key);
-        return value == null ? default : JsonSerializer.Deserialize<T>(value);
+        return value == null ? default : JsonConvert.DeserializeObject<T>(value);
     }
 }
 

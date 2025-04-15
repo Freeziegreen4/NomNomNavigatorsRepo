@@ -13,7 +13,7 @@ namespace nomnomnavis.Models
         public string Cuisine { get; set; }
         [Required(ErrorMessage = "Please enter operational hours!")]
         public string Hours { get; set; }
-        public List<Review> Reviews { get; set; } = new List<Review>();
+        //public List<Review> Reviews { get; set; } = new List<Review>();
         // Check Review model for why this was added
     }
 }

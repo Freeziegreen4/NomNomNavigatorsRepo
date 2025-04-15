@@ -5,7 +5,7 @@
 
 <h2>Search Restaurants</h2>
 
-<form method="get">
+<form asp-action="Index" method="post">
     <input type="text" name="searchTerm" placeholder="Search..." />
     <select name="cuisine">
         <option value="">All Cuisines</option>
@@ -35,7 +35,11 @@
             <td>@r.Address</td>
             <td>@r.Cuisine</td>
             <td>
-                <a href="/Restaurant/Details/@r.Id">Details</a> |
+                <a href="/Restaurant/Details/@r.Id">Details</a>
+                @*@<form asp-action="Details" method="post">
+                    <input type="hidden" name="id" value="@r.Id" />
+                    <button type="submit" class="btn btn-primary mt-2">Details</button>
+                </form>*@ |
                 <a href="/Restaurant/Favorite/@r.Id">❤️ Save</a>
             </td>
         </tr>
