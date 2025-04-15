@@ -1,22 +1,49 @@
 ﻿@model List<nomnomnavis.Models.Restaurant>
 @{
     ViewData["Title"] = "Search Restaurants";
+    List<string> SortOptions = new List<string>
+	{
+        "Sort By",
+		"highest-rated",
+		"most-reviewed"
+	};
 }
 
 <h2>Search Restaurants</h2>
 
 <form asp-action="Index" method="post">
-    <input type="text" name="searchTerm" placeholder="Search..." />
+    <input type="text" name="searchTerm" placeholder="Search..." value="@ViewBag.SearchTerm"/>
     <select name="cuisine">
-        <option value="">All Cuisines</option>
-        <option value="Italian">Italian</option>
-        <option value="Mexican">Mexican</option>
-        <option value="Japanese">Japanese</option>
+		@foreach (var cuisine in ViewBag.Cuisines)
+		{
+			if (cuisine == ViewBag.SelectedCuisine)
+			{
+				<option value="@cuisine" selected>@cuisine</option>
+			}
+			else
+			{
+				<option value="@cuisine">@cuisine</option>
+			}
+		}
+        @* <option value="">All Cuisines</option> *@
+        @* <option value="Italian">Italian</option> *@
+        @* <option value="Mexican">Mexican</option> *@
+        @* <option value="Japanese">Japanese</option> *@
     </select>
     <select name="sort">
-        <option value="">Sort By</option>
-        <option value="highest-rated">Highest Rated</option>
-        <option value="most-reviewed">Most Reviewed</option>
+        @foreach (var sortOption in SortOptions)
+        {
+            if(sortOption == ViewBag.Sort){
+                <option value="@sortOption" selected>@sortOption</option>
+            }
+            else
+            {
+                <option value="@sortOption">@sortOption</option>
+            }
+        }
+        @* <option value="">Sort By</option> *@
+        @* <option value="highest-rated">Highest Rated</option> *@
+        @* <option value="most-reviewed">Most Reviewed</option> *@
     </select>
     <button type="submit">Search</button>
 </form>
