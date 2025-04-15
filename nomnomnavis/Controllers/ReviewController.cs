@@ -29,7 +29,7 @@ namespace nomnomnavis.Controllers
         public IActionResult Add(int restID)
         {
             ViewBag.RestaurantId = restID;
-            return View();
+            return View(new Review());
         }
 
         // POST: Submit review
@@ -37,14 +37,17 @@ namespace nomnomnavis.Controllers
         public async Task<IActionResult> Add(Review review, int restID)
         {
             // Assign a dummy user or handle logged-in user logic
-            review.User = new User { Id = 1 }; // Dummy user
-            var response = await _httpClient.PostAsJsonAsync("", review);
+            User currentUser = (await _httpClient.GetFromJsonAsync<List<User>>("http://localhost:5018/api/userAPI"))
+                .FirstOrDefault(u => u.Username.Equals(HttpContext.Session.GetString("username")));
+            review.User = currentUser; // Dummy user // NOTE (CAM): gonna make this
+                                       // dummy user contain the id of the active user
+            var response = await _httpClient.PostAsJsonAsync($"http://localhost:5018/api/reviewAPI/{restID}", review);
 
             if (response.IsSuccessStatusCode)
                 return RedirectToAction("RestaurantReviews", new { restID });
 
             ModelState.AddModelError(string.Empty, "Error submitting review.");
-            return View(review);
+            return RedirectToAction("Restaurant", "Details");
         }
 
         // GET: Edit review

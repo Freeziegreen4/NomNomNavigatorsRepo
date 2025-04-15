@@ -67,8 +67,8 @@ namespace NomNomsAPI.Controllers
             return Ok(restaurant.Reviews);
         }
 
-        [HttpPost]
-        public ActionResult<Review> AddReview([FromBody] Review review)
+        [HttpPost("{restID}")]
+        public ActionResult<Review> AddReview(int restID, [FromBody] Review review)
         {
             if (!CheckReviewValues(review))
                 return BadRequest("Ensure that all fields are not blank");
@@ -85,6 +85,13 @@ namespace NomNomsAPI.Controllers
                 User = review.User,
                 Rating = review.Rating
             };
+
+            Restaurant restaurantToReview = nomNomDBAccessor.restaurants.FirstOrDefault(r => r.Id == restID);
+            if(restaurantToReview != null)
+            {
+                restaurantToReview.Reviews.Add(newReview);
+                nomNomDBAccessor.restaurants.Update(restaurantToReview);
+            }
 
             nomNomDBAccessor.reviews.Add(newReview);
             nomNomDBAccessor.SaveChanges();

@@ -81,11 +81,12 @@ namespace NomNomsAPI.Controllers
             Restaurant restaurantToUpdate = nomNomDBAccessor.restaurants
                 .FirstOrDefault(r => r.Id == restID);
             if (restaurantToUpdate == null)
-                return BadRequest($"Restaurant with ID {restID} does not exist");
+                return NotFound($"Restaurant with ID {restID} does not exist");
             else if (!CheckRestaurantValues(restaurantInfo))
                 return BadRequest("Invalid values. Cannot update with blank values");
-            else if (nomNomDBAccessor.restaurants.FirstOrDefault(r => r.Address == restaurantInfo.Address) != null)
-                return BadRequest("There is already a restaurant at that address. " +
+            else if (nomNomDBAccessor.restaurants.FirstOrDefault(r => r.Address.Equals(restaurantInfo.Address)
+                && r.Id != restaurantInfo.Id) != null)
+                return Conflict("There is already a restaurant at that address. " +
                     "Please ensure the address is not taken already!");
 
             restaurantToUpdate.Name = restaurantInfo.Name;
@@ -96,12 +97,12 @@ namespace NomNomsAPI.Controllers
             nomNomDBAccessor.restaurants.Update(restaurantToUpdate);
             nomNomDBAccessor.SaveChanges();
             Restaurant checkForNewValues = nomNomDBAccessor.restaurants.First(r => r.Id == restID);
-            if (!checkForNewValues.Name.Equals(restaurantToUpdate)
+            if (!checkForNewValues.Name.Equals(restaurantToUpdate.Name)
                 || !checkForNewValues.Address.Equals(restaurantToUpdate.Address)
                 || !checkForNewValues.Hours.Equals(restaurantToUpdate.Hours)
                 || !checkForNewValues.Cuisine.Equals(restaurantToUpdate.Cuisine))
-                return Conflict($"Failed to update {checkForNewValues.Name}(s) at " +
-                    $"{checkForNewValues.Address} values");
+                return BadRequest($"Failed to update {checkForNewValues.Name}(s) at " +
+                    $"{checkForNewValues.Address}");
 
             return Ok(restaurantToUpdate);
         }

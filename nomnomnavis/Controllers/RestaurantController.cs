@@ -44,6 +44,11 @@ namespace nomnomnavis.Controllers
             return View(restaurant);
         }
 
+        public IActionResult AddReview(int restID)
+        {
+            return RedirectToAction("Add", "Reviews", restID);
+        }
+
         public IActionResult Favorite(int id)
         {
             List<int> favoriteIds = HttpContext.Session.GetObjectFromJson<List<int>>("Favorites") ?? new List<int>();

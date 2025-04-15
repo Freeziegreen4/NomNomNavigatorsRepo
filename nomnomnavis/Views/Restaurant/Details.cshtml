@@ -9,12 +9,22 @@
 <p><strong>Cuisine:</strong> @Model.Cuisine</p>
 
 <h3>Reviews</h3>
+
+<form asp-action="AddReview">
+    <input type="hidden" name="restID" value="@Model.Id" />
+    <button type="submit"
+            class="btn btn-sm bg-light border-2 border-secondary pull-right"
+    >
+        Add Review
+    </button>
+</form>
+
 @if (Model.Reviews.Any())
 {
     <ul>
         @foreach (var review in Model.Reviews)
         {
-            @* <li>@review.Comment - ⭐ @review.Rating</li> *@
+            <li>@review.Content - ⭐ @review.Rating</li>
         }
     </ul>
 }

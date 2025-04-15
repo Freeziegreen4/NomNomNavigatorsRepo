@@ -1,7 +1,12 @@
 ﻿@model nomnomnavis.Models.Restaurant
 <h2>Edit Restaurant</h2>
 
-<form method="post" asp-action="EditRestaurant">
+@if(ViewBag.Error != null)
+{
+    <div class="text-danger">@ViewBag.Error</div>
+}
+
+<form asp-action="EditRestaurant" method="post">
     <input type="hidden" asp-for="Id" />
     <div class="form-group">
         <label>Name</label>
